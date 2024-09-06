@@ -1,0 +1,42 @@
+services:
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch_container
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+      - efk_network
+    volumes:
+      - "./opensearch-data:/usr/share/opensearch/data"
+    ports:
+      - "9200:9200"
+    expose:
+      - 9200
+    restart: always
+
+  opensearch-dashboard:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: opensearch_dashboard_container
+    networks:
+      - efk_network
+    ports:
+      - "5601:5601"
+    expose:
+      - "5601"
+    environment:
+      - 'OPENSEARCH_HOSTS="https://opensearch:9200"'
+    restart: always
+
+networks:
+  efk_network:
+    driver: bridge
