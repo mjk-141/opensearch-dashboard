@@ -7,10 +7,11 @@
 
 ## opensearch-dashboard 구축
 ### 구조
+```
 .
 ├─ docker-compose.yml
 └─ opensearch-data(디렉토리)
-
+```
 ### opensearch-dashboard 실행
 * 아래 코드를 긁어다가 붙여넣으면 된다.
 ```bash
